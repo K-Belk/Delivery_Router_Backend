@@ -68,3 +68,6 @@ class LocationsSerializer(serializers.ModelSerializer):
         instance.address = address
         instance.save()
         return instance
+
+class KeySerializer(serializers.Serializer):
+    key = serializers.CharField(max_length=256)
