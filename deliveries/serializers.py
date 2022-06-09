@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from deliveries.models import Addresses, City_State, Delivery_Location
+from deliveries.models import Addresses, City_State, Delivery_Location, Deliveries
 
 class CityStateSerializer(serializers.ModelSerializer):
 
@@ -71,3 +71,9 @@ class LocationsSerializer(serializers.ModelSerializer):
 
 class KeySerializer(serializers.Serializer):
     key = serializers.CharField(max_length=256)
+
+class DeliverySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Deliveries
+        fields = ['driver', 'lnk_delivery', 'fifty_five_delivery', 'location']

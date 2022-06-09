@@ -1,7 +1,13 @@
+import json
 from .models import City_State,Addresses,Delivery_Location,Delivery_Season,Deliveries
 from rest_framework import viewsets, response
-from .serializers import AddressesSerializer, CityStateSerializer, KeySerializer, LocationsSerializer
+from .serializers import AddressesSerializer, CityStateSerializer, DeliverySerializer, KeySerializer, LocationsSerializer
+from django.contrib.auth.models import User
+
 import environ
+
+from rest_framework import permissions
+
 
 # Initialise environment variables
 env = environ.Env()
@@ -12,13 +18,6 @@ class CityStateVewSet(viewsets.ModelViewSet):
     queryset = City_State.objects.all()
     serializer_class = CityStateSerializer
 
-    # def retrieve(self, request, pk=None):
-    #     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    #     print(request)
-    #     print(pk)
-
-    #     return 
-
 class AddressesVewSet(viewsets.ModelViewSet):
     queryset = Addresses.objects.all()
     serializer_class = AddressesSerializer
@@ -26,6 +25,35 @@ class AddressesVewSet(viewsets.ModelViewSet):
 class LocationsVewSet(viewsets.ModelViewSet):
     queryset = Delivery_Location.objects.all()
     serializer_class = LocationsSerializer
+
+class DeliveryViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+
+    queryset = Deliveries.objects.all()
+    serializer_class = DeliverySerializer
+
+    def create(self, request):
+
+        serializer = self.get_serializer(
+        data = {
+            'driver': request.user.pk,
+            'lnk_delivery': int(request.data['lnk_delivery']), 
+            'fifty_five_delivery': int(request.data['fifty_five_delivery']),
+            'location': int(request.data['location']) ,
+        })
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return response.Response(serializer.data)
+
+    def retrieve(self, request, pk):
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        data = Deliveries.objects.filter(location_id=pk)
+        print(data)
+        serializer = DeliverySerializer(data)
+        print(serializer.data)
+        return response.Response(serializer.data)
+
+    
 
 class GoogleApiKeyViewSet(viewsets.ViewSet):
 

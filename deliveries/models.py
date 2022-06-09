@@ -29,7 +29,6 @@ class Deliveries(models.Model):
     fifty_five_delivery = models.IntegerField(null=True)
     date = models.DateField(null=True)
     location = models.ForeignKey(Addresses, on_delete=models.CASCADE ,related_name='delivery')
-    
 
 class Delivery_Season(models.Model):
     season = models.CharField(max_length=200)
