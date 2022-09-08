@@ -46,14 +46,12 @@ class DeliveryViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data)
 
     def retrieve(self, request, pk):
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         data = Deliveries.objects.filter(location_id=pk)
-        print(data)
-        serializer = DeliverySerializer(data)
-        print(serializer.data)
+        serializer = DeliverySerializer(data, many=True)
         return response.Response(serializer.data)
 
-    
+    # def update(self, request, pk):
+    #     print(request.data)
 
 class GoogleApiKeyViewSet(viewsets.ViewSet):
 
