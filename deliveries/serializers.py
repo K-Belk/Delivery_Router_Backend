@@ -74,6 +74,8 @@ class KeySerializer(serializers.Serializer):
 
 class DeliverySerializer(serializers.ModelSerializer):
 
+
     class Meta:
         model = Deliveries
-        fields = ['driver', 'lnk_delivery', 'fifty_five_delivery', 'location']
+        fields = '__all__'
+        depth = 2
