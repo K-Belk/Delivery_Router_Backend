@@ -1,8 +1,8 @@
+
 import json
-from .models import City_State,Addresses,Delivery_Location,Delivery_Season,Deliveries
+from .models import Delivery_Location,Deliveries
 from rest_framework import viewsets, response
-from .serializers import AddressesSerializer, CityStateSerializer, DeliverySerializer, KeySerializer, LocationsSerializer
-from django.contrib.auth.models import User
+from .serializers import  DeliverySerializer, KeySerializer, LocationsSerializer
 
 import environ
 
@@ -13,18 +13,10 @@ from rest_framework import permissions
 env = environ.Env()
 environ.Env.read_env()
 
-
-class CityStateVewSet(viewsets.ModelViewSet):
-    queryset = City_State.objects.all()
-    serializer_class = CityStateSerializer
-
-class AddressesVewSet(viewsets.ModelViewSet):
-    queryset = Addresses.objects.all()
-    serializer_class = AddressesSerializer
-
 class LocationsVewSet(viewsets.ModelViewSet):
     queryset = Delivery_Location.objects.all()
     serializer_class = LocationsSerializer
+
 
 class DeliveryViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
@@ -76,3 +68,7 @@ class MapKeyViewSet(viewsets.ViewSet):
             instance = {'key': env('MAP_KEY')}
         )
         return response.Response(serializer.data)
+
+
+
+    
