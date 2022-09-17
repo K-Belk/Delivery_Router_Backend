@@ -1,8 +1,8 @@
 
 import json
-from .models import Delivery_Location,Deliveries
+from .models import Delivery_Location, Deliveries, ProductChoices, EditionChoices
 from rest_framework import viewsets, response
-from .serializers import  DeliverySerializer, KeySerializer, LocationsSerializer
+from .serializers import  DeliverySerializer, KeySerializer, LocationsSerializer, ProductSerializer, EditionSerializer
 
 import environ
 
@@ -24,23 +24,27 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     queryset = Deliveries.objects.all()
     serializer_class = DeliverySerializer
 
-    def create(self, request):
+    # def create(self, request):
+    #     data = {
+    #         # 'driver': request.user.pk,
+    #         'driver': request.data['driver'],
+    #         'date' : request.data['date'],
+    #         'edition': int(request.data['edition']), 
+    #         'product': int(request.data['product']),
+    #         'amount' : int(request.data['amount']),
+    #         'location': int(request.data['location']) ,
+    #     }
+        
+    #     serializer = self.get_serializer(data= data)
+    #     # print(data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     return response.Response(serializer.data)
 
-        serializer = self.get_serializer(
-        data = {
-            'driver': request.user.pk,
-            'lnk_delivery': int(request.data['lnk_delivery']), 
-            'fifty_five_delivery': int(request.data['fifty_five_delivery']),
-            'location': int(request.data['location']) ,
-        })
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return response.Response(serializer.data)
-
-    def retrieve(self, request, pk):
-        data = Deliveries.objects.filter(location_id=pk)
-        serializer = DeliverySerializer(data, many=True)
-        return response.Response(serializer.data)
+    # def retrieve(self, request, pk):
+    #     data = Deliveries.objects.filter(location_id=pk)
+    #     serializer = DeliverySerializer(data, many=True)
+    #     return response.Response(serializer.data)
 
     # def update(self, request, pk):
     #     print(request.data)
@@ -69,6 +73,12 @@ class MapKeyViewSet(viewsets.ViewSet):
         )
         return response.Response(serializer.data)
 
+class ProductViewSet(viewsets.ModelViewSet):
 
+    queryset = ProductChoices.objects.all()
+    serializer_class = ProductSerializer
 
-    
+class EditionViewSet(viewsets.ModelViewSet):
+
+    queryset = EditionChoices.objects.all()
+    serializer_class = EditionSerializer

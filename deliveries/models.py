@@ -1,6 +1,8 @@
+from datetime import date
+from random import choices
 from django.db import models
 from django.conf import settings
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 
 
 class Delivery_Location(models.Model):
@@ -14,6 +16,9 @@ class Delivery_Location(models.Model):
     longitude = models.CharField(max_length=200)
     notes = models.TextField(blank=True)
 
+    def __str__(self) -> str:
+        return f"{self.name}, {self.street}, {'Suite' + self.suite + ', ' if self.suite else ''}{self.city}, {self.state}, {self.postal_code}"
+
     class Meta:
         unique_together =('name','street', 'city', 'state', 'postal_code')
 
@@ -24,20 +29,25 @@ class ProductChoices(models.Model):
         return self.product
         
 class EditionChoices(models.Model):
+    
+    def current_year():
+        return date.today().year
+
     edition = models.CharField(max_length=200)
-    year = models.IntegerField(unique_for_year=('year'))
+    year = models.IntegerField(validators=[MinValueValidator(2000), MaxValueValidator(current_year())])
     product = models.ForeignKey(ProductChoices, on_delete=models.CASCADE, related_name='product_choice_edition')
 
     def __str__(self):
-        return self.edition + self.year + self.product
+        return f"{self.edition} {self.year} {self.product}"
 
     class Meta:
         unique_together = ('edition', 'year', 'product')
 
 class Deliveries(models.Model):
+
     driver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     edition = models.ForeignKey(EditionChoices, on_delete=models.CASCADE, related_name='edition_choice')
     product = models.ForeignKey(ProductChoices, on_delete=models.CASCADE, related_name='product_choice')
-    amount = models.IntegerField()
+    amount = models.PositiveIntegerField()
     date = models.DateField(null=True)
     location = models.ForeignKey(Delivery_Location, on_delete=models.CASCADE ,related_name='delivery')
