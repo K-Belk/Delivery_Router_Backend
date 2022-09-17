@@ -6,11 +6,11 @@ from rest_framework.test import APITestCase
 from ..models import Delivery_Location
 
 
-class LocationModelTest(APITestCase):
+class LocationsTest(APITestCase):
 
     def setUp(self):
 
-        self.location_url = reverse('deliveries:locations-list')
+        self.location_url = reverse('locations-list')
         self.location_data = {
         "name": "KVC Healthcare Nebraska",
         "street": "5555 Central Park ",
@@ -54,7 +54,6 @@ class LocationModelTest(APITestCase):
         invalid_name_data['name'] = ''
 
         response_name = self.client.post(self.location_url, json.dumps(invalid_name_data), content_type='application/json')
-
         self.assertEqual(response_name.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_invalid_street_location(self):
@@ -106,7 +105,6 @@ class LocationModelTest(APITestCase):
     def test_get_locations(self):
 
         response = self.client.get(self.location_url)
-        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_detail_location(self):
@@ -115,16 +113,5 @@ class LocationModelTest(APITestCase):
         id = query[0]['id']
         response = self.client.get(f'{self.location_url}{id}/')
         self.assertEqual(response.data['id'], id)
-
-class DeliveryModelTest(APITestCase):
-    
-    def setUp(self):
-        pass
-
-    def test_create_valid_delivery(self):
-        pass
-
-    def test_create_invalid_delivery(self):
-        pass
 
     

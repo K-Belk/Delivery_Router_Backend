@@ -9,6 +9,6 @@ class ExternalApiTest(APITestCase):
     def setUp(self):
         self.address = '719%20Wisconsin%20st,Cawker%20City,KS,67430'
     
-    def test_geocode(self):
-        the_call = ExternalApiCall()
-        print(the_call.geocode(self.address))
+    # def test_geocode(self):
+    #     the_call = ExternalApiCall()
+    #     print(the_call.geocode(self.address))
