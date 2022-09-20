@@ -3,6 +3,8 @@ from random import choices
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
+from django.contrib.postgres.fields import ArrayField
+
 
 
 class Delivery_Location(models.Model):
@@ -15,6 +17,8 @@ class Delivery_Location(models.Model):
     latitude = models.CharField(max_length=200)
     longitude = models.CharField(max_length=200)
     notes = models.TextField(blank=True)
+    phone = models.CharField(max_length= 200, blank=True)
+    hours = ArrayField(models.CharField(max_length=100, blank=True), default=list, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}, {self.street}, {'Suite' + self.suite + ', ' if self.suite else ''}{self.city}, {self.state}, {self.postal_code}"

@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'knox',
     'accounts',
+    'googlemaps',
+    'environ',
 ]
 
 MIDDLEWARE = [
