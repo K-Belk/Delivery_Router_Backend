@@ -1,16 +1,12 @@
-
-import json
+import environ
+from rest_framework import permissions, response, viewsets
 
 from deliveries.external_api_calls import GoogleCalls
-from .models import Delivery_Location, Deliveries, ProductChoices, EditionChoices
-from rest_framework import viewsets, response
-from .serializers import  DeliverySerializer, KeySerializer, LocationsSerializer, ProductSerializer, EditionSerializer
-import googlemaps
 
-import environ
-
-from rest_framework import permissions
-
+from .models import (Deliveries, Delivery_Location, EditionChoices,
+                     ProductChoices)
+from .serializers import (DeliverySerializer, EditionSerializer, KeySerializer,
+                          LocationsSerializer, ProductSerializer)
 
 # Initialise environment variables
 env = environ.Env()

@@ -10,11 +10,11 @@ def api_client():
     return APIClient
 
 @pytest.fixture
-def new_location():
+def new_location(db):
     return baker.make(Delivery_Location)
 
 @pytest.fixture
-def prepared_location():
+def prepared_location(db):
     return baker.prepare(Delivery_Location)
 
 @pytest.fixture
@@ -39,11 +39,11 @@ def new_location_dict(new_location):
         }
 
 @pytest.fixture
-def prepared_location_dict(prepared_location):
+def prepare_location_dict(prepared_location):
     location = prepared_location
     return {
         'location' : location,
-        'expected_json' : {
+        'location_dict' : {
             'created': {
                 'name' : location.name,
                 'street' : location.street,
@@ -60,11 +60,11 @@ def prepared_location_dict(prepared_location):
     }
 
 @pytest.fixture
-def new_edition():
+def new_edition(db):
     return baker.make(EditionChoices)
 
 @pytest.fixture
-def prepare_edition():
+def prepare_edition(db):
     return baker.prepare(EditionChoices, year = 2013,_save_related=True)
 
 @pytest.fixture
@@ -94,11 +94,11 @@ def prepare_edition_dict(prepare_edition):
 
 
 @pytest.fixture
-def new_delivery():
+def new_delivery(db):
     return baker.make(Deliveries)
 
 @pytest.fixture
-def prepare_delivery():
+def prepare_delivery(db):
     return baker.prepare(Deliveries,_save_related=True)
 
 @pytest.fixture
@@ -160,5 +160,32 @@ def prepare_delivery_dict(prepare_delivery):
                 'state' : delivery.location.state,
                 'postal_code' : delivery.location.postal_code,
             }
+        }
+    }
+
+@pytest.fixture
+def new_product(db):
+    return baker.make(ProductChoices)
+
+@pytest.fixture
+def prepare_product(db):
+    return baker.prepare(ProductChoices)
+
+@pytest.fixture
+def new_product_dict(new_product):
+    return {
+        'product' : new_product,
+        'product_dict' : {
+            'id' : new_product.id,
+            'product' : new_product.product
+        }
+    }
+
+@pytest.fixture
+def prepare_product_dict(prepare_product):
+    return {
+        'product' : prepare_product,
+        'product_dict' : {
+            'product' : prepare_product.product
         }
     }

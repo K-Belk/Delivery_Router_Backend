@@ -18,8 +18,8 @@ class TestLocationsEndpoints:
         assert response.status_code == 200
         assert len(json.loads(response.content)) == 3
 
-    def test_create(self, api_client, monkeypatch, prepared_location_dict):
-        location = prepared_location_dict['location']
+    def test_create(self, api_client, monkeypatch, prepare_location_dict):
+        location = prepare_location_dict['location']
         def g_call_mock_data(data):
             return {'status': {'request_status': 'valid',
                             'business_status':'OPERATIONAL'
@@ -41,7 +41,7 @@ class TestLocationsEndpoints:
             'notes' : location.notes,
         }
 
-        expected_json = prepared_location_dict['expected_json']
+        expected_json = prepare_location_dict['location_dict']
 
         response = api_client().post(
             self.endpoint,
@@ -60,8 +60,8 @@ class TestLocationsEndpoints:
         ("state"),
         ("postal_code"),
     ])
-    def test_invalid_location(self, field, api_client, monkeypatch, prepared_location_dict):
-        location = prepared_location_dict['expected_json']['created']
+    def test_invalid_location(self, field, api_client, monkeypatch, prepare_location_dict):
+        location = prepare_location_dict['location_dict']['created']
         location[field] = ''
         def g_call_mock_data(data):
             return {'status': {'request_status': 'valid',
@@ -101,10 +101,10 @@ class TestLocationsEndpoints:
         assert response.status_code == 200
         assert json.loads(response.content) == expected_json
 
-    def test_update(self, api_client, prepared_location_dict):
+    def test_update(self, api_client, prepare_location_dict):
         old_location = baker.make(Delivery_Location)
-        prepared_location_dict['location']
-        location_dict = prepared_location_dict['expected_json']['created']
+        prepare_location_dict['location']
+        location_dict = prepare_location_dict['location_dict']['created']
         location_dict['id'] = old_location.id
 
         url = f'{self.endpoint}{old_location.id}/'
@@ -125,10 +125,10 @@ class TestLocationsEndpoints:
         ("phone"),
         ("hours"),
     ])
-    def test_partial_update(self, field, api_client, prepared_location_dict):
+    def test_partial_update(self, field, api_client, prepare_location_dict):
         old_location = baker.make(Delivery_Location)
-        prepared_location_dict['location']
-        location_dict = prepared_location_dict['expected_json']['created']
+        prepare_location_dict['location']
+        location_dict = prepare_location_dict['location_dict']['created']
 
         valid_data = location_dict[field]
         url = f'{self.endpoint}{old_location.id}/'
