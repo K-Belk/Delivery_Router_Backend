@@ -1,8 +1,8 @@
 import pytest
-from rest_framework.test import APIClient
+from deliveries.models import (Deliveries, Delivery_Location, EditionChoices,
+                               ProductChoices)
 from model_bakery import baker
-from deliveries.models import Delivery_Location, Deliveries, EditionChoices, ProductChoices
-
+from rest_framework.test import APIClient
 
 
 @pytest.fixture

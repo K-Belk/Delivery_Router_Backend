@@ -1,12 +1,11 @@
-import pytest
 import json
-from model_bakery import baker
+
+import pytest
+from deliveries.models import Delivery_Location
+from deliveries.views import LocationsVewSet, google_call
 from django.urls import reverse
 from django_mock_queries.query import MockSet
-from deliveries.models import Delivery_Location
-from deliveries.views import LocationsVewSet
-from deliveries.views import google_call
-
+from model_bakery import baker
 
 pytestmark = pytest.mark.unit
 
